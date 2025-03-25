@@ -22,6 +22,7 @@ public:
     state* make_transition_move(transitionMove);
     void addToContainer(transitionMove input);
     void addMove(transition , state* );
+    state* move(const transitionMove&);
     string getStringContainer();
 
 };

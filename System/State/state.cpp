@@ -28,3 +28,12 @@ string state::getStringContainer() {
     }
     return temp;
 }
+
+state *state::move(const transitionMove& input) {
+    for (auto & item: moves) {
+        if(item.first.getMove() == input){
+            return item.second;
+        }
+    }
+    return this;
+}

@@ -6,6 +6,7 @@
 #define PASSWORDNFA_SYSTEM_H
 #include "State/state.h"
 #include "map"
+#include "iostream"
 
 class System {
 private:
@@ -27,6 +28,9 @@ public:
     void setNumber_num(int input){ this->number_num = input;}
     void makeFinalState();
     void makeAutomata();
+
+    bool IsPass(string );
+    void printStates(vector<string>&);
 };
 
 

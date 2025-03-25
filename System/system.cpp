@@ -52,7 +52,6 @@ void System::reversMakeAutomate(state *current) {
                 state* test = current->make_transition_move(item.first);
                 map1[test->getStringContainer()] = test;
             }
-
         }
     }
     for (auto &item: current->getMoves()) {
@@ -69,4 +68,38 @@ string System::IsAvail(state *state, transitionMove input) {
         return temp;
     }
     return "";
+}
+
+void System::printStates(vector<std::string> & input) {
+    for (auto & item: input) {
+        cout << "{"<< item << "}" << " -> ";
+    }
+    cout << "END\n";
+}
+
+
+bool System::IsPass(std::string input) {
+    state* temp = mainState;
+    vector<string> states;
+    for (int i = 0; i < input.length(); ++i) {
+        states.emplace_back(temp->getStringContainer());
+        if(temp == finalState){
+            printStates(states);
+            return true;
+        }
+        if(input[i] <= 'z' && input[i] >='a'){
+            temp = temp->move(transitionMove ::MOVE_a_z);
+        }
+        else if(input[i] <= 'Z' && input[i] >='A'){
+            temp = temp->move(transitionMove ::MOVE_A_Z_);
+        }
+        else if(input[i] <= '9' && input[i] >='0'){
+            temp = temp->move(transitionMove ::MOVE_0_9);
+        }
+    }
+    printStates(states);
+    if(temp == finalState){
+        return true;
+    }
+    return false;
 }
