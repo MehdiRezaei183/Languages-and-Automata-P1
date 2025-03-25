@@ -13,6 +13,7 @@ string transitionToString(const transitionMove& input){
         case transitionMove::MOVE_0_9 :return "MOVE_0_9";
         case transitionMove::Null : return "Null";
         case transitionMove::MOVE_a_z : return "MOVE_a_z";
+        case transitionMove::Move_LL : return "Move_LL";
     }
     return "";
 }

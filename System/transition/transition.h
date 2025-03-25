@@ -14,6 +14,7 @@ enum class transitionMove{
     MOVE_A_Z_,
     MOVE_a_z,
     MOVE_0_9,
+    Move_LL,
 };
 string transitionToString(const transitionMove&);
 

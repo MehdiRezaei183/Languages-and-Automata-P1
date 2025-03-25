@@ -14,16 +14,19 @@ private:
     state* finalState;
     int number_lower;
     int number_num;
+    int number_upper;
+    int number_LL;
     vector<pair<transitionMove , int>> transition_limit;
     map<string , state*> map1;
 
 
     void reversMakeAutomate(state *);
     string IsAvail(state* , transitionMove);
+    transitionMove charToTransition(const char& );
 
 public:
     System();
-    System(int , int );
+    System(int , int , int ,int );
     void setNumber_lower(int input){ this->number_lower = input;}
     void setNumber_num(int input){ this->number_num = input;}
     void makeFinalState();

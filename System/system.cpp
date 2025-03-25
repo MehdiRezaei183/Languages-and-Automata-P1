@@ -4,24 +4,39 @@
 
 #include "System.h"
 
-
+transitionMove System::charToTransition(const char& input) {
+    if(input <= 'z' && input >='a'){
+        return transitionMove ::MOVE_a_z;
+    }
+    else if(input <= 'Z' && input >='A'){
+        return transitionMove ::MOVE_A_Z_;
+    }
+    else if(input <= '9' && input >='0'){
+        return transitionMove ::MOVE_0_9;
+    }else{
+        return transitionMove ::Move_LL;
+    }
+}
 
 System ::System() {
     number_lower = 1;
     number_num = 1;
+    number_upper =  1;
+    number_LL = 1;
     multiset<transitionMove> temp = {transitionMove ::Null};
     mainState = new state(temp);
     makeAutomata();
 }
-System ::System(int low, int num) : number_lower(low) , number_num(num) {
+System ::System(int upper, int low , int num ,int  ll) : number_lower(low) , number_num(num),number_upper(upper),number_LL(ll) {
     multiset<transitionMove> temp = {transitionMove ::Null};
     mainState = new state(temp);
     makeFinalState();
     map1[mainState->getStringContainer()] = mainState;
     map1[finalState->getStringContainer()] = finalState;
-    transition_limit = {make_pair(transitionMove ::MOVE_A_Z_ , 1),
+    transition_limit = {make_pair(transitionMove ::MOVE_A_Z_ , number_upper),
                         make_pair(transitionMove ::MOVE_a_z , number_lower),
-                        make_pair(transitionMove ::MOVE_0_9 , number_num)
+                        make_pair(transitionMove ::MOVE_0_9 , number_num),
+                        make_pair(transitionMove ::Move_LL,number_LL)
                         };
     makeAutomata();
 }
@@ -34,7 +49,13 @@ void System::makeFinalState() {
     for (int i = 0; i < number_lower; ++i) {
         temp.insert(transitionMove ::MOVE_a_z);
     }
-    temp.insert(transitionMove ::MOVE_A_Z_);
+    for (int i = 0; i < number_lower; ++i) {
+        temp.insert(transitionMove ::MOVE_A_Z_);
+    }
+    for (int i = 0; i < number_lower; ++i) {
+        temp.insert(transitionMove ::Move_LL);
+    }
+
     finalState = new state(temp);
 }
 
@@ -62,10 +83,14 @@ void System::makeAutomata() {
     reversMakeAutomate(mainState);
 }
 
-string System::IsAvail(state *state, transitionMove input) {
-    string temp = state->getStringContainer() + "," + transitionToString(input);
-    if(map1.find(temp) != map1.end()){
-        return temp;
+string System::IsAvail(state *stat, transitionMove input) {
+    multiset<transitionMove > temp = stat->getContainer();
+    state test(temp);
+    test.addToContainer(input);
+
+
+    if(map1.find(test.getStringContainer()) != map1.end()){
+        return test.getStringContainer();
     }
     return "";
 }
@@ -87,16 +112,9 @@ bool System::IsPass(std::string input) {
             printStates(states);
             return true;
         }
-        if(input[i] <= 'z' && input[i] >='a'){
-            temp = temp->move(transitionMove ::MOVE_a_z);
-        }
-        else if(input[i] <= 'Z' && input[i] >='A'){
-            temp = temp->move(transitionMove ::MOVE_A_Z_);
-        }
-        else if(input[i] <= '9' && input[i] >='0'){
-            temp = temp->move(transitionMove ::MOVE_0_9);
-        }
+        temp = temp->move(charToTransition(input[i]));
     }
+    states.emplace_back(temp->getStringContainer());
     printStates(states);
     if(temp == finalState){
         return true;
