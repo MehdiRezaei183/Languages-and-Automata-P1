@@ -16,11 +16,13 @@ private:
     vector<pair<transition , state*>> moves;
 public:
     state();
-    explicit state(transitionMove input);
+    state(multiset<transitionMove>& input):container(input){}
     multiset<transitionMove> getContainer(){return container;}
     vector<pair<transition , state*>> getMoves(){return moves;}
+    state* make_transition_move(transitionMove);
     void addToContainer(transitionMove input);
     void addMove(transition , state* );
+    string getStringContainer();
 
 };
 

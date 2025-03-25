@@ -3,15 +3,28 @@
 //
 
 #include "state.h"
-state ::state() = default
-state ::state(transitionMove input) {
-    container.insert(input);
-}
 
+state ::state()  = default;
 void state::addMove(transition move, state * dis) {
     moves.emplace_back(make_pair(move,dis));
 }
 
 void state::addToContainer(transitionMove input) {
     container.insert(input);
+}
+
+state* state::make_transition_move(transitionMove input) {
+    multiset<transitionMove> temp = container;
+    temp.insert(input);
+    state* newState = new state(temp);
+    moves.emplace_back(make_pair(transition(input),newState));
+    return newState;
+}
+
+string state::getStringContainer() {
+    string temp;
+    for (auto &item : container) {
+        temp += "," + transitionToString(item);
+    }
+    return temp;
 }

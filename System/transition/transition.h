@@ -10,17 +10,19 @@
 
 using namespace std;
 enum class transitionMove{
-    _A_Z,
-    _a_z,
-    _0_9,
-    Null
+    Null,
+    MOVE_A_Z_,
+    MOVE_a_z,
+    MOVE_0_9,
 };
-
+string transitionToString(const transitionMove&);
 
 class transition {
 private:
     transitionMove move;
 public:
+    transition();
+    transition(transitionMove);
     transitionMove getMove(){return move;}
     void setMove(transitionMove input){ this->move = input;}
 
