@@ -59,7 +59,7 @@ void System::makeFinalState() {
     finalState = new state(temp);
 }
 
-void System::reversMakeAutomate(state *current) {
+void System::reversMakeAutomate(state *current , map<string , bool>& t) {
     if(current->getContainer() == finalState->getContainer()){
         return;
     }
@@ -76,19 +76,22 @@ void System::reversMakeAutomate(state *current) {
         }
     }
     for (auto &item: current->getMoves()) {
-        reversMakeAutomate(item.second);
+        if(t.find(item.second->getStringContainer()) == t.end())
+            reversMakeAutomate(item.second , t);
     }
+    t[current->getStringContainer()] = true;
 }
 void System::makeAutomata() {
-    reversMakeAutomate(mainState);
+    map<string , bool> t;
+    reversMakeAutomate(mainState , t );
+    makeTable(mainState);
+    printAll();
 }
 
 string System::IsAvail(state *stat, transitionMove input) {
     multiset<transitionMove > temp = stat->getContainer();
     state test(temp);
     test.addToContainer(input);
-
-
     if(map1.find(test.getStringContainer()) != map1.end()){
         return test.getStringContainer();
     }
@@ -120,4 +123,23 @@ bool System::IsPass(std::string input) {
         return true;
     }
     return false;
+}
+
+void System::printAll(){
+    cout << "| current state |" << "| next state| " << "| input |\n\n" ;
+    for (const auto & item: table) {
+        cout << "| {" << item.first << "} | {" << item.second.second << "} | "  << transitionToString(item.second.first) << " | \n\n";
+    }
+}
+void System ::makeTable(state* input){
+    pair<string , pair<transitionMove , string>> move;
+    move.first = input->getStringContainer();
+    for (auto & item : input->getMoves()) {
+        pair<transitionMove , string> temp;
+        temp.second = item.second->getStringContainer();
+        temp.first = item.first.getMove();
+        move.second = temp;
+        table.push_back(move);
+        makeTable(item.second);
+    }
 }

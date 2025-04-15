@@ -19,8 +19,9 @@ private:
     vector<pair<transitionMove , int>> transition_limit;
     map<string , state*> map1;
 
+    vector<pair<string , pair<transitionMove , string>>> table;
 
-    void reversMakeAutomate(state *);
+    void reversMakeAutomate(state * , map<string , bool>&);
     string IsAvail(state* , transitionMove);
     transitionMove charToTransition(const char& );
 
@@ -34,6 +35,8 @@ public:
 
     bool IsPass(string );
     void printStates(vector<string>&);
+    void makeTable(state* );
+    void printAll();
 };
 
 
